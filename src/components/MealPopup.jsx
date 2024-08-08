@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { legacy } from "../data";
+import { legacy } from "../data.js";
 import { TrashSimple } from "@phosphor-icons/react";
 
 const MealPopup = ({ setTogglePopup, setMealsList, mealsList }) => {

@@ -17,15 +17,13 @@ import CustomForm from "./components/CustomForm";
 import AdminDashboard from "./components/AdminDashboard";
 import { useFirebase } from "./Firebase";
 import Loader from "./components/Loader";
+import UserMealDetail from "./components/UserMealDetail";
 
 const AppRoutes = () => {
   const { user, loading } = useFirebase();
 
-  // Log user object to debug
-  console.log("User in AppRoutes:", user);
-
   if (loading) {
-    return <Loader />; // or a loading spinner
+    return <Loader />;
   }
 
   return (
@@ -60,6 +58,28 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             {user?.isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" />}
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        exact
+        path="/custom-meal"
+        element={
+          <ProtectedRoute>
+            {user?.isAdmin ? (
+              <UserMealDetail type="custom" />
+            ) : (
+              <Navigate to="/dashboard" />
+            )}
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        exact
+        path="/add-meal/:userId"
+        element={
+          <ProtectedRoute>
+            {user?.isAdmin ? <UserMealDetail /> : <Navigate to="/dashboard" />}
           </ProtectedRoute>
         }
       />
