@@ -22,7 +22,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getFirebaseErrorMessage } from "./utils/firebaseErrors"; // Import the error mapping function
+import { getFirebaseErrorMessage } from "./utils/firebaseErrors";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -254,11 +254,38 @@ export const FirebaseProvider = ({ children }) => {
     );
     const formResponses = formResponsesSnapshot.docs.map((doc) => doc.data());
 
+    const dietPlansSnapshot = await getDocs(
+      collection(db, `users/${userId}/dietPlans`),
+    );
+    const dietPlans = dietPlansSnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
     return {
       ...userData,
       id: userId,
       formResponses: formResponses,
+      dietPlans: dietPlans,
     };
+  };
+
+  const saveDietPlanForSpecificUser = async (userId, selectedWeek) => {
+    const dietPlanRef = doc(
+      db,
+      `users/${userId}/dietPlans`,
+      `${selectedWeek.startDate}`,
+    );
+
+    const dietPlanSnapshot = await getDoc(dietPlanRef);
+
+    if (dietPlanSnapshot.exists()) {
+      // If the diet plan already exists, update it
+      await updateDoc(dietPlanRef, selectedWeek);
+    } else {
+      // If the diet plan doesn't exist, create it
+      await setDoc(dietPlanRef, selectedWeek);
+    }
   };
 
   return (
@@ -278,6 +305,7 @@ export const FirebaseProvider = ({ children }) => {
         fetchUserData,
         fetchAllUserDetails,
         fetchUserDetails,
+        saveDietPlanForSpecificUser,
       }}
     >
       {children}

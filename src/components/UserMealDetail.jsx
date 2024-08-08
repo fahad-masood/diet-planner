@@ -6,6 +6,8 @@ import { DEFAULT_MEAL_DATA } from "../data";
 import { addDays } from "date-fns";
 import Loader from "./Loader";
 import "react-datepicker/dist/react-datepicker.css";
+import { useFirebase } from "../Firebase";
+import { useParams } from "react-router-dom";
 
 const DEFAULT_WEEK = { startDate: "", endDate: "", list: [] };
 const DEFAULT_MEAL = {
@@ -26,6 +28,7 @@ const DEFAULT_MEAL = {
 };
 
 const UserMealDetail = ({ type = "" }) => {
+  const { saveDietPlanForSpecificUser } = useFirebase();
   const days = ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"];
   const [dietDetails, setDietDetails] = useState(DEFAULT_MEAL_DATA);
   const [selectedDate, setSelectedDate] = useState("");
@@ -33,6 +36,7 @@ const UserMealDetail = ({ type = "" }) => {
   const [selectedWeek, setSelectedWeek] = useState(DEFAULT_WEEK);
   const [isEnable, setIsEnable] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { userId } = useParams();
 
   useEffect(() => {
     if (dietDetails) {
@@ -85,13 +89,22 @@ const UserMealDetail = ({ type = "" }) => {
     // Save draft logic here
     console.log("save draft", selectedWeek);
   };
-  const handleSave = () => {
-    // Save draft logic here
-    console.log("save payload", selectedWeek);
+
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      await saveDietPlanForSpecificUser(userId, selectedWeek);
+      console.log("Diet plan saved successfully");
+    } catch (error) {
+      console.error("Failed to save diet plan:", error);
+    }
+    setLoading(false);
   };
+
   if (loading) {
     return <Loader />;
   }
+
   return (
     <div className="p-4">
       {type === "custom" && (
