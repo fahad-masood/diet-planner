@@ -68,41 +68,84 @@ const MealContainer = ({
   };
 
   return (
+    // Old
+    // <div className="relative">
+    //   <div
+    //     className={`${
+    //       togglePopup
+    //         ? "overflow-hidden backdrop-blur-md"
+    //         : copy?.detail?.dayId === day?.dayId
+    //         ? "border-2 border-red-500"
+    //         : ""
+    //     } mb-2 mr-2 rounded-lg border border-gray-500 bg-violet-400 p-3 shadow-xl`}
+    //   >
+    //     <MealsList meals={mealsList} setMeals={setMealsList} />
+
+    //     <div className="flex justify-center text-center">
+    //       <PlusCircle
+    //         className="cursor-pointer"
+    //         size={32}
+    //         color="blue"
+    //         onClick={() => setTogglePopup(true)}
+    //       />
+    //       <Swap
+    //         className="cursor-pointer"
+    //         onClick={() => handleSwap(day)}
+    //         color="green"
+    //         size={32}
+    //       />
+    //       <Copy
+    //         className="cursor-pointer"
+    //         onClick={() => handleCopy(day)}
+    //         color="red"
+    //         size={32}
+    //       />
+    //     </div>
+    //   </div>
+    //   {togglePopup && (
+    //     <div className="absolute">
+    //       <MealPopup
+    //         mealsList={mealsList}
+    //         setMealsList={setMealsList}
+    //         setTogglePopup={setTogglePopup}
+    //       />
+    //     </div>
+    //   )}
+    // </div>
+
+    //New
     <div className="relative">
       <div
         className={`${
           togglePopup
             ? "overflow-hidden backdrop-blur-md"
             : copy?.detail?.dayId === day?.dayId
-            ? "border-2 border-red-500"
+            ? "border-2 border-blue-500"
             : ""
-        } mb-2 mr-2 rounded-lg border border-gray-500 bg-violet-400 p-3 shadow-xl`}
+        } mb-2 mr-2 rounded-lg border border-gray-300 bg-gray-50 p-3 shadow-md`}
       >
         <MealsList meals={mealsList} setMeals={setMealsList} />
 
-        <div className="flex justify-center text-center">
+        <div className="mt-2 flex justify-center space-x-4 text-center">
           <PlusCircle
-            className="cursor-pointer"
+            className="cursor-pointer text-blue-600"
             size={32}
-            color="blue"
             onClick={() => setTogglePopup(true)}
           />
           <Swap
-            className="cursor-pointer"
-            onClick={() => handleSwap(day)}
-            color="green"
+            className="cursor-pointer text-green-600"
             size={32}
+            onClick={() => handleSwap(day)}
           />
           <Copy
-            className="cursor-pointer"
-            onClick={() => handleCopy(day)}
-            color="red"
+            className="cursor-pointer text-red-600"
             size={32}
+            onClick={() => handleCopy(day)}
           />
         </div>
       </div>
       {togglePopup && (
-        <div className="absolute">
+        <div className="absolute inset-0">
           <MealPopup
             mealsList={mealsList}
             setMealsList={setMealsList}

@@ -122,95 +122,197 @@ const UserMealDetail = ({ type = "" }) => {
   }
 
   return (
-    <div className="p-4">
-      {type === "custom" && (
-        <div className="flex justify-between pb-4">
-          <h1 className="text-2xl">Create Custom Meal</h1>
-          <div>
-            <span
-              className="mr-2 cursor-pointer rounded-md border border-blue-700 bg-blue-500 px-3 py-2 pr-2 text-white hover:bg-white hover:text-blue-700"
-              onClick={handleReset}
-            >
-              Reset Meal Item
-            </span>
-            <span
-              className="cursor-pointer rounded-md border border-lime-700 bg-lime-500 px-3 py-2 pr-2 text-white hover:bg-white hover:text-lime-700"
+    // OLD
+    // <div className="p-4">
+    //   {type === "custom" && (
+    //     <div className="flex justify-between pb-4">
+    //       <h1 className="text-2xl">Create Custom Meal</h1>
+    //       <div>
+    //         <span
+    //           className="mr-2 cursor-pointer rounded-md border border-blue-700 bg-blue-500 px-3 py-2 pr-2 text-white hover:bg-white hover:text-blue-700"
+    //           onClick={handleReset}
+    //         >
+    //           Reset Meal Item
+    //         </span>
+    //         <span
+    //           className="cursor-pointer rounded-md border border-lime-700 bg-lime-500 px-3 py-2 pr-2 text-white hover:bg-white hover:text-lime-700"
+    //           onClick={handleDraft}
+    //         >
+    //           Save as Draft
+    //         </span>
+    //       </div>
+    //     </div>
+    //   )}
+    //   {type !== "custom" && (
+    //     <div className="flex justify-between pb-4">
+    //       <div className="flex gap-2">
+    //         <div className="flex flex-col">
+    //           {" "}
+    //           <label htmlFor="datePicker">Select Date:*</label>{" "}
+    //           <DatePicker
+    //             showIcon
+    //             selected={selectedDate}
+    //             dateFormat="dd/MM/yyyy"
+    //             onChange={(date) => handleDate(date)}
+    //             minDate={new Date()}
+    //             placeholderText="Select a start date"
+    //           />
+    //         </div>
+    //         <div className="flex flex-col">
+    //           {" "}
+    //           <label htmlFor="datePicker">Select Date:</label>{" "}
+    //           <DatePicker
+    //             showIcon
+    //             selected={endDate}
+    //             dateFormat="dd/MM/yyyy"
+    //             disabled
+    //             minDate={new Date()}
+    //             placeholderText="Select a end date"
+    //           />
+    //         </div>
+    //       </div>
+    //       <div>
+    //         <span
+    //           className="mr-2 cursor-pointer rounded-md border border-blue-700 bg-blue-500 px-3 py-2 text-white hover:bg-white hover:text-blue-700"
+    //           onClick={handleReset}
+    //         >
+    //           Reset Meal Item
+    //         </span>
+    //         <span
+    //           className="cursor-pointer rounded-md border border-lime-700 bg-lime-500 px-3 py-2 text-white hover:bg-white hover:text-lime-700"
+    //           onClick={handleSave}
+    //         >
+    //           Save
+    //         </span>
+    //       </div>
+    //     </div>
+    //   )}
+
+    //   <div className="container mx-auto">
+    //     <div className="grid h-[10vh] grid-cols-8 place-items-center">
+    //       <div></div>
+    //       {days?.map((day, index) => (
+    //         <h3
+    //           className="rounded-lg border border-gray-500 bg-white px-3 py-1 text-gray-800 shadow-lg"
+    //           key={`${day}~~${index}`}
+    //         >
+    //           {day}
+    //         </h3>
+    //       ))}
+    //     </div>
+    //   </div>
+
+    //   <DayMealContainer
+    //     dietDetails={dietDetails}
+    //     setDietDetails={setDietDetails}
+    //   />
+    //   <PlusCircle
+    //     className="cursor-pointer"
+    //     size={32}
+    //     color="blue"
+    //     onClick={handleAddMeal}
+    //   />
+    //   {customToggler && (
+    //     <CustomPopup toggler={setCustomToggler} mealList={selectedWeek?.list} />
+    //   )}
+    // </div>
+
+    // NEW
+
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="flex flex-col items-center border-b pb-6 md:flex-row md:justify-between">
+        <h1 className="mb-4 text-3xl font-semibold text-gray-800 md:mb-0">
+          {type === "custom" ? "Create Custom Diet Plan" : "Diet Plan Details"}
+        </h1>
+        <div className="flex gap-3">
+          <button
+            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-600 transition hover:bg-gray-200"
+            onClick={handleReset}
+          >
+            Reset
+          </button>
+          {type === "custom" ? (
+            <button
+              className="rounded-md bg-yellow-500 px-4 py-2 text-sm text-white transition hover:bg-yellow-600"
               onClick={handleDraft}
             >
               Save as Draft
-            </span>
-          </div>
+            </button>
+          ) : (
+            <button
+              className="rounded-md bg-blue-600 px-4 py-2 text-sm text-white transition hover:bg-blue-700"
+              onClick={handleSave}
+            >
+              Save
+            </button>
+          )}
         </div>
-      )}
+      </div>
+
       {type !== "custom" && (
-        <div className="flex justify-between pb-4">
-          <div className="flex gap-2">
+        <div className="flex flex-col items-center justify-between py-6 md:flex-row">
+          <div className="flex flex-col gap-4 md:flex-row">
             <div className="flex flex-col">
-              {" "}
-              <label htmlFor="datePicker">Select Date:*</label>{" "}
+              <label className="text-sm font-medium text-gray-600">
+                Start Date*
+              </label>
               <DatePicker
-                showIcon
                 selected={selectedDate}
                 dateFormat="dd/MM/yyyy"
                 onChange={(date) => handleDate(date)}
                 minDate={new Date()}
-                placeholderText="Select a start date"
+                placeholderText="Select start date"
+                className="mt-1 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm"
               />
             </div>
             <div className="flex flex-col">
-              {" "}
-              <label htmlFor="datePicker">Select Date:</label>{" "}
+              <label className="text-sm font-medium text-gray-600">
+                End Date
+              </label>
               <DatePicker
-                showIcon
                 selected={endDate}
                 dateFormat="dd/MM/yyyy"
                 disabled
-                minDate={new Date()}
-                placeholderText="Select a end date"
+                placeholderText="Select end date"
+                className="mt-1 rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm"
               />
             </div>
-          </div>
-          <div>
-            <span
-              className="mr-2 cursor-pointer rounded-md border border-blue-700 bg-blue-500 px-3 py-2 text-white hover:bg-white hover:text-blue-700"
-              onClick={handleReset}
-            >
-              Reset Meal Item
-            </span>
-            <span
-              className="cursor-pointer rounded-md border border-lime-700 bg-lime-500 px-3 py-2 text-white hover:bg-white hover:text-lime-700"
-              onClick={handleSave}
-            >
-              Save
-            </span>
           </div>
         </div>
       )}
 
-      <div className="container mx-auto">
-        <div className="grid h-[10vh] grid-cols-8 place-items-center">
-          <div></div>
-          {days?.map((day, index) => (
-            <h3
-              className="rounded-lg border border-gray-500 bg-white px-3 py-1 text-gray-800 shadow-lg"
+      <div className="mb-6 mt-4">
+        <div className="grid grid-cols-4 gap-4 sm:grid-cols-8">
+          <div className="col-span-1"></div>
+          {days.map((day, index) => (
+            <div
+              className="text-center text-sm font-medium text-gray-700"
               key={`${day}~~${index}`}
             >
               {day}
-            </h3>
+            </div>
           ))}
         </div>
       </div>
 
-      <DayMealContainer
-        dietDetails={dietDetails}
-        setDietDetails={setDietDetails}
-      />
-      <PlusCircle
-        className="cursor-pointer"
-        size={32}
-        color="blue"
-        onClick={handleAddMeal}
-      />
+      {/* Meal Plan Container */}
+      <div className="mt-4 rounded-lg bg-white p-4 shadow-sm">
+        <DayMealContainer
+          dietDetails={dietDetails}
+          setDietDetails={setDietDetails}
+        />
+      </div>
+
+      {/* Add Meal Button */}
+      <div className="mt-8 flex justify-center">
+        <PlusCircle
+          className="cursor-pointer text-blue-600"
+          size={48}
+          onClick={handleAddMeal}
+        />
+      </div>
+
+      {/* Custom Popup */}
       {customToggler && (
         <CustomPopup toggler={setCustomToggler} mealList={selectedWeek?.list} />
       )}

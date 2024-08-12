@@ -18,10 +18,25 @@ const MealType = ({ mealDetails, setDietDetails, id, dietDetails }) => {
   };
 
   return (
+    // OLD
+    // <>
+    //   <h3>{mealDetails.mealType}</h3>
+    //   <p>at</p>
+    //   <input type="time" value={time} onChange={handleOnChange} />
+    // </>
+
+    //NEW
     <>
-      <h3>{mealDetails.mealType}</h3>
-      <p>at</p>
-      <input type="time" value={time} onChange={handleOnChange} />
+      <h3 className="text-lg font-semibold text-gray-700">
+        {mealDetails.mealType}
+      </h3>
+      <p className="text-sm text-gray-500">at</p>
+      <input
+        type="time"
+        value={time}
+        onChange={handleOnChange}
+        className="mt-1 rounded-md px-2 py-1 text-sm text-gray-700"
+      />
     </>
   );
 };
