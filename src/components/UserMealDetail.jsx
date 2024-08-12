@@ -281,8 +281,8 @@ const UserMealDetail = ({ type = "" }) => {
         </div>
       )}
 
-      <div className="mb-6 mt-4">
-        <div className="grid grid-cols-4 gap-4 sm:grid-cols-8">
+      <div className="container mx-auto">
+        <div className="grid h-[6vh] grid-cols-8 place-items-center">
           <div className="col-span-1"></div>
           {days.map((day, index) => (
             <div
@@ -295,7 +295,6 @@ const UserMealDetail = ({ type = "" }) => {
         </div>
       </div>
 
-      {/* Meal Plan Container */}
       <div className="mt-4 rounded-lg bg-white p-4 shadow-sm">
         <DayMealContainer
           dietDetails={dietDetails}
@@ -303,7 +302,6 @@ const UserMealDetail = ({ type = "" }) => {
         />
       </div>
 
-      {/* Add Meal Button */}
       <div className="mt-8 flex justify-center">
         <PlusCircle
           className="cursor-pointer text-blue-600"
@@ -312,7 +310,6 @@ const UserMealDetail = ({ type = "" }) => {
         />
       </div>
 
-      {/* Custom Popup */}
       {customToggler && (
         <CustomPopup toggler={setCustomToggler} mealList={selectedWeek?.list} />
       )}
