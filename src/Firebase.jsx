@@ -20,6 +20,8 @@ import {
   getDoc,
   updateDoc,
   addDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirebaseErrorMessage } from "./utils/firebaseErrors";
@@ -288,6 +290,59 @@ export const FirebaseProvider = ({ children }) => {
     }
   };
 
+  const saveCustomDietPlan = async (newMeal) => {
+    const customDietPlansRef = collection(db, "customDietPlans");
+    const nameLowerCase = newMeal.name.toLowerCase();
+
+    // Check if the custom diet plan with the same name already exists
+    const existingPlansQuery = query(
+      customDietPlansRef,
+      where("nameLowerCase", "==", nameLowerCase),
+    );
+    const existingPlansSnapshot = await getDocs(existingPlansQuery);
+
+    if (!existingPlansSnapshot.empty) {
+      throw new Error(
+        "This custom diet plan already exists. Please try saving with a different name.",
+      );
+    }
+
+    // If no duplicate found, save the new custom diet plan
+    await addDoc(customDietPlansRef, {
+      ...newMeal,
+      nameLowerCase,
+    });
+  };
+
+  // Fetch all custom meals
+  const fetchCustomMeals = async () => {
+    const customDietPlansRef = collection(db, "customDietPlans");
+    const snapshot = await getDocs(customDietPlansRef);
+    const customMeals = snapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    return customMeals;
+  };
+
+  // Fetch custom meals by name
+  const fetchCustomMealsByName = async (name) => {
+    const customDietPlansRef = collection(db, "customDietPlans");
+    const nameLowerCase = name.toLowerCase();
+
+    const queryByName = query(
+      customDietPlansRef,
+      where("nameLowerCase", "==", nameLowerCase),
+    );
+    const snapshot = await getDocs(queryByName);
+
+    const customMeals = snapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    return customMeals;
+  };
+
   return (
     <FirebaseContext.Provider
       value={{
@@ -306,6 +361,9 @@ export const FirebaseProvider = ({ children }) => {
         fetchAllUserDetails,
         fetchUserDetails,
         saveDietPlanForSpecificUser,
+        saveCustomDietPlan,
+        fetchCustomMeals,
+        fetchCustomMealsByName,
       }}
     >
       {children}

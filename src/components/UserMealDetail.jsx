@@ -101,14 +101,12 @@ const UserMealDetail = ({ type = "" }) => {
     setDietDetails(DEFAULT_MEAL_DATA);
   };
 
-  const handleDraft = () => {
+  const handleDraft = async () => {
     // Save draft logic here
     setCustomToggler(true);
-    console.log("save draft", selectedWeek);
   };
 
   const handleSave = async () => {
-    console.log("inisdne");
     try {
       setLoading(true);
       await saveDietPlanForSpecificUser(userId, selectedWeek);

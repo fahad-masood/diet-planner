@@ -1,12 +1,17 @@
 import React, { useState } from "react";
+import { useFirebase } from "../Firebase";
+import Loader from "./Loader";
 
 const CustomPopup = ({ toggler, mealList }) => {
   const [mealName, setMealName] = useState("");
+  const { saveCustomDietPlan } = useFirebase();
+  const [loading, setLoading] = useState(false);
+
   const handleOutside = (e) => {
     if (e.target.id === "con") toggler(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (mealName.length > 0) {
       const newMeal = {
         id: "",
@@ -14,12 +19,23 @@ const CustomPopup = ({ toggler, mealList }) => {
         list: mealList,
       };
       console.log("newm", newMeal);
-      //   toggler(false);
-      // setMealsList([...mealsList, newMeal]);
+      try {
+        setLoading(true);
+        await saveCustomDietPlan(newMeal);
+        console.log("Custom diet plan saved successfully");
+        toggler(false);
+      } catch (error) {
+        console.error("Failed to save custom diet plan:", error);
+      }
+      setLoading(false);
     } else {
       alert("Please enter a meal name");
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div
@@ -28,7 +44,7 @@ const CustomPopup = ({ toggler, mealList }) => {
       onClick={handleOutside}
     >
       <div
-        className="mx-auto mt-28 flex flex min-h-[30vh] w-1/3 flex-col rounded-md border border-gray-500 bg-white p-4"
+        className="mx-auto mt-28 flex min-h-[30vh] w-1/3 flex-col rounded-md border border-gray-500 bg-white p-4"
         id="inside"
       >
         <h2 className="pb-4 text-xl">Custom Meal Details</h2>
