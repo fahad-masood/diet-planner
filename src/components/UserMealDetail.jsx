@@ -8,6 +8,7 @@ import Loader from "./Loader";
 import "react-datepicker/dist/react-datepicker.css";
 import { useFirebase } from "../Firebase";
 import { useParams } from "react-router-dom";
+import CustomPopup from "./CustomPopup";
 
 const DEFAULT_WEEK = { startDate: "", endDate: "", list: [] };
 const DEFAULT_MEAL = {
@@ -28,7 +29,7 @@ const DEFAULT_MEAL = {
 };
 
 const UserMealDetail = ({ type = "" }) => {
-  const { saveDietPlanForSpecificUser } = useFirebase();
+  const { saveDietPlanForSpecificUser, fetchUserDetails } = useFirebase();
   const days = ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"];
   const [dietDetails, setDietDetails] = useState(DEFAULT_MEAL_DATA);
   const [selectedDate, setSelectedDate] = useState("");
@@ -36,6 +37,7 @@ const UserMealDetail = ({ type = "" }) => {
   const [selectedWeek, setSelectedWeek] = useState(DEFAULT_WEEK);
   const [isEnable, setIsEnable] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [customToggler, setCustomToggler] = useState(false);
   const { userId } = useParams();
 
   useEffect(() => {
@@ -44,6 +46,20 @@ const UserMealDetail = ({ type = "" }) => {
     }
     setLoading(false);
   }, [dietDetails]);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userDetails = await fetchUserDetails(userId);
+
+        console.log("userDetails", userDetails);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+      setLoading(false);
+    };
+
+    fetchUser();
+  }, [userId]);
 
   const handleDate = (val) => {
     setSelectedDate(val);
@@ -87,10 +103,12 @@ const UserMealDetail = ({ type = "" }) => {
 
   const handleDraft = () => {
     // Save draft logic here
+    setCustomToggler(true);
     console.log("save draft", selectedWeek);
   };
 
   const handleSave = async () => {
+    console.log("inisdne");
     try {
       setLoading(true);
       await saveDietPlanForSpecificUser(userId, selectedWeek);
@@ -129,22 +147,30 @@ const UserMealDetail = ({ type = "" }) => {
       {type !== "custom" && (
         <div className="flex justify-between pb-4">
           <div className="flex gap-2">
-            <DatePicker
-              showIcon
-              selected={selectedDate}
-              dateFormat="dd/MM/yyyy"
-              onChange={(date) => handleDate(date)}
-              minDate={new Date()}
-              placeholderText="Select a start date"
-            />
-            <DatePicker
-              showIcon
-              selected={endDate}
-              dateFormat="dd/MM/yyyy"
-              disabled
-              minDate={new Date()}
-              placeholderText="Select a end date"
-            />
+            <div className="flex flex-col">
+              {" "}
+              <label htmlFor="datePicker">Select Date:*</label>{" "}
+              <DatePicker
+                showIcon
+                selected={selectedDate}
+                dateFormat="dd/MM/yyyy"
+                onChange={(date) => handleDate(date)}
+                minDate={new Date()}
+                placeholderText="Select a start date"
+              />
+            </div>
+            <div className="flex flex-col">
+              {" "}
+              <label htmlFor="datePicker">Select Date:</label>{" "}
+              <DatePicker
+                showIcon
+                selected={endDate}
+                dateFormat="dd/MM/yyyy"
+                disabled
+                minDate={new Date()}
+                placeholderText="Select a end date"
+              />
+            </div>
           </div>
           <div>
             <span
@@ -187,6 +213,9 @@ const UserMealDetail = ({ type = "" }) => {
         color="blue"
         onClick={handleAddMeal}
       />
+      {customToggler && (
+        <CustomPopup toggler={setCustomToggler} mealList={selectedWeek?.list} />
+      )}
     </div>
   );
 };
