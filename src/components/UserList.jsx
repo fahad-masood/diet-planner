@@ -215,7 +215,7 @@ const UserList = () => {
           >
             <li>{user?.formResponses[0].name}</li>
             <li>{user?.formResponses[0].age}</li>
-            <li className="col-span-2">{user?.formResponses[0].email}</li>
+            <li className="col-span-2">{user?.email}</li>
             <li>{user?.formResponses[0].dietStartDate}</li>
             <li
               className={
