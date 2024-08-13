@@ -190,7 +190,7 @@ const UserList = () => {
 
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="mb-6 flex items-center justify-between border-b border-gray-300 pb-4">
-        <h1 className="text-2xl font-semibold text-gray-800">All Users</h1>
+        <h1 className="text-3xl font-semibold text-gray-800">All Users</h1>
         <button
           className="rounded-md bg-yellow-500 px-4 py-2 text-white transition hover:bg-yellow-600"
           onClick={handleCustom}

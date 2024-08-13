@@ -23,7 +23,13 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  getMetadata,
+} from "firebase/storage";
 import { getFirebaseErrorMessage } from "./utils/firebaseErrors";
 
 // Firebase configuration
@@ -343,6 +349,19 @@ export const FirebaseProvider = ({ children }) => {
     return customMeals;
   };
 
+  const getFileMetadata = async (url) => {
+    const storage = getStorage();
+    const fileRef = ref(storage, url);
+
+    try {
+      const metadata = await getMetadata(fileRef);
+      return metadata;
+    } catch (error) {
+      console.error("Error fetching metadata:", error);
+      return null;
+    }
+  };
+
   return (
     <FirebaseContext.Provider
       value={{
@@ -364,6 +383,7 @@ export const FirebaseProvider = ({ children }) => {
         saveCustomDietPlan,
         fetchCustomMeals,
         fetchCustomMealsByName,
+        getFileMetadata,
       }}
     >
       {children}

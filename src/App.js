@@ -18,6 +18,7 @@ import AdminDashboard from "./components/AdminDashboard";
 import { useFirebase } from "./Firebase";
 import Loader from "./components/Loader";
 import UserMealDetail from "./components/UserMealDetail";
+import UserDetails from "./components/UserDetails";
 
 const AppRoutes = () => {
   const { user, loading } = useFirebase();
@@ -80,6 +81,15 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             {user?.isAdmin ? <UserMealDetail /> : <Navigate to="/dashboard" />}
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        exact
+        path="/user-details/:userId"
+        element={
+          <ProtectedRoute>
+            {user?.isAdmin ? <UserDetails /> : <Navigate to="/dashboard" />}
           </ProtectedRoute>
         }
       />

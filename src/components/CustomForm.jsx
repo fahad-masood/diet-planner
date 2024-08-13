@@ -3,10 +3,9 @@ import { useFirebase } from "../Firebase";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 
-const CustomForm = ({ user }) => {
+const CustomForm = ({ user, handleLogout }) => {
   const { saveFormResponse, markFormAsSubmitted, uploadFile } = useFirebase();
   const [formData, setFormData] = useState({
-    email: "",
     name: "",
     age: "",
     gender: "",
@@ -96,400 +95,411 @@ const CustomForm = ({ user }) => {
       {loading ? (
         <Loader />
       ) : (
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4 p-4 md:p-8 lg:w-2/3 lg:flex-col lg:items-center lg:justify-center"
-        >
-          <button
-            type="button"
-            onClick={() => navigate("/logout")} // Change to your logout functionality
-            className="absolute right-4 top-4 text-red-500"
+        <div className=" min-h-screen bg-gray-100 p-6">
+          <div className="mb-6 flex items-center justify-between border-b border-gray-300 pb-4">
+            <h1 className="text-3xl font-semibold text-gray-800">
+              Please fill the form
+            </h1>
+            <button
+              className="rounded-md bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            className="mx-auto space-y-6 rounded-lg bg-white p-6 shadow-md lg:w-3/4"
           >
-            Logout
-          </button>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Email ✱
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Name ✱
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Age ✱
-            </label>
-            <input
-              type="number"
-              name="age"
-              value={formData.age}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Gender ✱
-            </label>
-            <input
-              type="text"
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Weight ✱
-            </label>
-            <input
-              type="number"
-              name="weight"
-              value={formData.weight}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Height ✱
-            </label>
-            <input
-              type="number"
-              name="height"
-              value={formData.height}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Physical activity ✱
-            </label>
-            <div className="flex flex-col">
-              {["bedridden", "light", "medium", "heavy"].map((activity) => (
-                <label key={activity} className="inline-flex items-center">
-                  <input
-                    type="radio"
-                    name="physicalActivity"
-                    value={activity}
-                    checked={formData.physicalActivity === activity}
-                    onChange={handleChange}
-                    className="form-radio"
-                    required
-                  />
-                  <span className="ml-2">{activity}</span>
-                </label>
-              ))}
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Full Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                autoFocus
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
             </div>
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Economic Status ✱
-            </label>
-            <div className="flex flex-col">
-              {[
-                "Low income group",
-                "middle income group",
-                "high income group",
-              ].map((status) => (
-                <label key={status} className="inline-flex items-center">
-                  <input
-                    type="radio"
-                    name="economicStatus"
-                    value={status}
-                    checked={formData.economicStatus === status}
-                    onChange={handleChange}
-                    className="form-radio"
-                    required
-                  />
-                  <span className="ml-2">{status}</span>
-                </label>
-              ))}
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Age <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                name="age"
+                value={formData.age}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
             </div>
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Food Choice ✱
-            </label>
-            <div className="flex flex-col">
-              {[
-                "non vegetarian",
-                "vegetarian (with egg)",
-                "vegetarian (without egg)",
-              ].map((choice) => (
-                <label key={choice} className="inline-flex items-center">
-                  <input
-                    type="radio"
-                    name="foodChoice"
-                    value={choice}
-                    checked={formData.foodChoice === choice}
-                    onChange={handleChange}
-                    className="form-radio"
-                    required
-                  />
-                  <span className="ml-2">{choice}</span>
-                </label>
-              ))}
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Gender <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
             </div>
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Requirements (if suffering from a disease, kindly mention) ✱
-            </label>
-            <textarea
-              name="requirements"
-              value={formData.requirements}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Symptoms
-            </label>
-            <textarea
-              name="symptoms"
-              value={formData.symptoms}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Surgical History
-            </label>
-            <textarea
-              name="surgicalHistory"
-              value={formData.surgicalHistory}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Medical Reports
-            </label>
-            <input
-              type="file"
-              name="medicalReports"
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Food Allergies
-            </label>
-            <textarea
-              name="foodAllergies"
-              value={formData.foodAllergies}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Food Likes
-            </label>
-            <textarea
-              name="foodLikes"
-              value={formData.foodLikes}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Food Dislikes
-            </label>
-            <textarea
-              name="foodDislikes"
-              value={formData.foodDislikes}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Smoking/Drinking Habit ✱
-            </label>
-            <input
-              type="text"
-              name="smokingDrinkingHabit"
-              value={formData.smokingDrinkingHabit}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Tried weight loss before? Y/N If yes, details. ✱
-            </label>
-            <input
-              type="text"
-              name="weightLoss"
-              value={formData.weightLoss}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Describe your daily diet ✱
-            </label>
-            <textarea
-              name="dailyDiet"
-              value={formData.dailyDiet}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Sleep and Wake up time ✱
-            </label>
-            <input
-              type="text"
-              name="sleepWakeTime"
-              value={formData.sleepWakeTime}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Any medication? Y/N If yes, details
-            </label>
-            <input
-              type="text"
-              name="medications"
-              value={formData.medications}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              How many times do you eat outside food in a week? ✱
-            </label>
-            <input
-              type="text"
-              name="outsideFoodFrequency"
-              value={formData.outsideFoodFrequency}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Digestive issues
-            </label>
-            <input
-              type="text"
-              name="digestiveIssues"
-              value={formData.digestiveIssues}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Straight Body Picture ✱
-            </label>
-            <input
-              type="file"
-              name="bodyPicture"
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Water intake (in liters) ✱
-            </label>
-            <input
-              type="text"
-              name="waterIntake"
-              value={formData.waterIntake}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              When do you want to start your diet plan? Mention the date. ✱
-            </label>
-            <input
-              type="date"
-              name="dietStartDate"
-              value={formData.dietStartDate}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Screenshot of payment ✱
-            </label>
-            <input
-              type="file"
-              name="paymentScreenshot"
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md"
-              required
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Additional information
-            </label>
-            <textarea
-              name="additionalInfo"
-              value={formData.additionalInfo}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm"
-            />
-          </div>
-          <button
-            type="submit"
-            className="rounded-md bg-blue-500 px-4 py-2 text-white"
-          >
-            Submit
-          </button>
-        </form>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Weight <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                name="weight"
+                value={formData.weight}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Height (in cms) <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                name="height"
+                value={formData.height}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Physical activity <span className="text-red-500">*</span>
+              </label>
+              <div className="mt-2 flex flex-col">
+                {["Bedridden", "Light", "Medium", "Heavy"].map((activity) => (
+                  <label
+                    key={activity}
+                    className="mb-2 mr-4 inline-flex items-center md:text-lg"
+                  >
+                    <input
+                      type="radio"
+                      name="physicalActivity"
+                      value={activity}
+                      checked={formData.physicalActivity === activity}
+                      onChange={handleChange}
+                      className="form-radio border-gray-300 text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                    <span className="ml-2 text-gray-700">{activity}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Economic Status <span className="text-red-500">*</span>
+              </label>
+              <div className="mt-2 flex flex-col">
+                {[
+                  "Low income group",
+                  "Middle income group",
+                  "High income group",
+                ].map((status) => (
+                  <label
+                    key={status}
+                    className="mb-2 mr-4 inline-flex items-center md:text-lg"
+                  >
+                    <input
+                      type="radio"
+                      name="economicStatus"
+                      value={status}
+                      checked={formData.economicStatus === status}
+                      onChange={handleChange}
+                      className="form-radio border-gray-300 text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                    <span className="ml-2 text-gray-700">{status}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Food Choice <span className="text-red-500">*</span>
+              </label>
+              <div className="mt-2 flex flex-col">
+                {[
+                  "Non Vegetarian",
+                  "Vegetarian (with egg)",
+                  "Vegetarian (without egg)",
+                ].map((choice) => (
+                  <label
+                    key={choice}
+                    className="mb-2 mr-4 inline-flex items-center md:text-lg"
+                  >
+                    <input
+                      type="radio"
+                      name="foodChoice"
+                      value={choice}
+                      checked={formData.foodChoice === choice}
+                      onChange={handleChange}
+                      className="form-radio border-gray-300 text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                    <span className="ml-2 text-gray-700">{choice}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Requirements (if suffering from a disease, kindly mention){" "}
+                <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                name="requirements"
+                value={formData.requirements}
+                onChange={handleChange}
+                className="mt-1 block h-24 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Symptoms
+              </label>
+              <textarea
+                name="symptoms"
+                value={formData.symptoms}
+                onChange={handleChange}
+                className="mt-1 block h-24 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Surgical History
+              </label>
+              <textarea
+                name="surgicalHistory"
+                value={formData.surgicalHistory}
+                onChange={handleChange}
+                className="mt-1 block h-24 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Medical Reports (Photo/PDF)
+              </label>
+              <input
+                type="file"
+                name="medicalReports"
+                accept="image/*,.pdf"
+                onChange={handleChange}
+                className="text-md file:text-md mt-1 block w-full text-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:border-0 file:bg-gray-600 file:px-4 file:py-2 file:font-semibold file:text-white hover:file:bg-gray-700"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Food Allergies
+              </label>
+              <textarea
+                name="foodAllergies"
+                value={formData.foodAllergies}
+                onChange={handleChange}
+                className="mt-1 block h-24 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Food Likes
+              </label>
+              <textarea
+                name="foodLikes"
+                value={formData.foodLikes}
+                onChange={handleChange}
+                className="mt-1 block h-24 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Food Dislikes
+              </label>
+              <textarea
+                name="foodDislikes"
+                value={formData.foodDislikes}
+                onChange={handleChange}
+                className="mt-1 block h-24 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Smoking/Drinking Habit <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="smokingDrinkingHabit"
+                value={formData.smokingDrinkingHabit}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Tried weight loss before? Y/N If yes, details.{" "}
+                <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="weightLoss"
+                value={formData.weightLoss}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Describe your daily diet <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                name="dailyDiet"
+                value={formData.dailyDiet}
+                onChange={handleChange}
+                className="mt-1 block h-24 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Sleep and Wake up time <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="sleepWakeTime"
+                value={formData.sleepWakeTime}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Any medication? Y/N If yes, details
+              </label>
+              <input
+                type="text"
+                name="medications"
+                value={formData.medications}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                How many times do you eat outside food in a week?{" "}
+                <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="outsideFoodFrequency"
+                value={formData.outsideFoodFrequency}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Digestive issues
+              </label>
+              <input
+                type="text"
+                name="digestiveIssues"
+                value={formData.digestiveIssues}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Straight Body Picture <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="file"
+                name="bodyPicture"
+                accept="image/*"
+                onChange={handleChange}
+                className="text-md file:text-md mt-1 block w-full text-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:border-0 file:bg-gray-600 file:px-4 file:py-2 file:font-semibold file:text-white hover:file:bg-gray-700"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Water intake (in liters) <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="waterIntake"
+                value={formData.waterIntake}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                When do you want to start your diet plan? Mention the date.{" "}
+                <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="date"
+                name="dietStartDate"
+                value={formData.dietStartDate}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Screenshot of payment (Photo/PDF){" "}
+                <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="file"
+                name="paymentScreenshot"
+                accept="image/*,.pdf"
+                onChange={handleChange}
+                className="text-md file:text-md mt-1 block w-full text-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:border-0 file:bg-gray-600 file:px-4 file:py-2 file:font-semibold file:text-white hover:file:bg-gray-700"
+                required
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-semibold tracking-wide text-gray-800 md:text-lg">
+                Additional information
+              </label>
+              <textarea
+                name="additionalInfo"
+                value={formData.additionalInfo}
+                onChange={handleChange}
+                className="mt-1 block h-24 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <button
+              type="submit"
+              className="rounded-md bg-blue-500 px-4 py-2 text-white"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
       )}
     </>
   );
