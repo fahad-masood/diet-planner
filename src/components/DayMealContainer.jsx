@@ -40,7 +40,7 @@ const DayMealContainer = ({ dietDetails, setDietDetails }) => {
     <div className="container mx-auto">
       <div className="grid grid-cols-8 gap-4">
         {dietDetails?.map((meal, i) => (
-          <React.Fragment key={i}>
+          <div key={`${meal?.MealType}-${i}`}>
             <div className="mb-4 mr-4 rounded-md border border-gray-300 bg-white p-4 shadow-md">
               <MealType
                 mealDetails={meal.mealDetails}
@@ -62,7 +62,7 @@ const DayMealContainer = ({ dietDetails, setDietDetails }) => {
                 />
               </div>
             ))}
-          </React.Fragment>
+          </div>
         ))}
       </div>
     </div>

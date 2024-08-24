@@ -9,6 +9,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useFirebase } from "../Firebase";
 import { useParams } from "react-router-dom";
 import CustomPopup from "./CustomPopup";
+import ImportPopup from "./ImportPopup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DEFAULT_WEEK = { startDate: "", endDate: "", list: [] };
 const DEFAULT_MEAL = {
@@ -38,8 +41,11 @@ const UserMealDetail = ({ type = "" }) => {
   const [isEnable, setIsEnable] = useState(false);
   const [loading, setLoading] = useState(true);
   const [customToggler, setCustomToggler] = useState(false);
+  const [importToggler, setImportToggler] = useState(false);
+  const [selectedCustom, setSelectedCustom] = useState("");
   const { userId } = useParams();
 
+  console.log("diet", dietDetails, "-ss", selectedCustom);
   useEffect(() => {
     if (dietDetails) {
       setSelectedWeek((prev) => ({ ...prev, list: dietDetails }));
@@ -112,6 +118,7 @@ const UserMealDetail = ({ type = "" }) => {
       await saveDietPlanForSpecificUser(userId, selectedWeek);
       console.log("Diet plan saved successfully");
     } catch (error) {
+      toast.error("Something went wrong");
       console.error("Failed to save diet plan:", error);
     }
     setLoading(false);
@@ -220,6 +227,7 @@ const UserMealDetail = ({ type = "" }) => {
     // NEW
 
     <div className="min-h-screen bg-gray-100 p-6">
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className="flex flex-col items-center border-b pb-6 md:flex-row md:justify-between">
         <h1 className="mb-4 text-3xl font-semibold text-gray-800 md:mb-0">
           {type === "custom" ? "Create Custom Diet Plan" : "Diet Plan Details"}
@@ -239,12 +247,20 @@ const UserMealDetail = ({ type = "" }) => {
               Save as Draft
             </button>
           ) : (
-            <button
-              className="rounded-md bg-blue-600 px-4 py-2 text-sm text-white transition hover:bg-blue-700"
-              onClick={handleSave}
-            >
-              Save
-            </button>
+            <>
+              <button
+                className="rounded-md bg-blue-600 px-4 py-2 text-sm text-white transition hover:bg-blue-700"
+                onClick={handleSave}
+              >
+                Save
+              </button>
+              <button
+                className="rounded-md bg-red-600 px-4 py-2 text-sm text-white transition hover:bg-red-700"
+                onClick={() => setImportToggler(true)}
+              >
+                Import Custom Diet
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -312,6 +328,14 @@ const UserMealDetail = ({ type = "" }) => {
 
       {customToggler && (
         <CustomPopup toggler={setCustomToggler} mealList={selectedWeek?.list} />
+      )}
+      {importToggler && (
+        <ImportPopup
+          toggler={setImportToggler}
+          handler={setDietDetails}
+          setSelectedCustom={setSelectedCustom}
+          selectedCustom={selectedCustom}
+        />
       )}
     </div>
   );
